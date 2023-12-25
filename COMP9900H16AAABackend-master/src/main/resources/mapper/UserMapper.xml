@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unswesg.comp9900h16aaabackend.Mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.unswesg.comp9900h16aaabackend.model.dto.UserDTO">
+            <id property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,nickname,password,
+        email
+    </sql>
+
+    <select id="getUserInfo" resultMap="BaseResultMap">
+        select user_id,nickname,email   from users where email=#{email} and password=#{password}
+    </select>
+
+    <select id="getUserCount" resultType="integer">
+        select count(email) from users where email=#{email}
+    </select>
+
+    <select id="getUserPassword" resultType="string">
+        select password from users where email=#{email}
+    </select>
+
+    <select id="getUserFrameworks" resultType="integer">
+        select framework_id from frameworks where user_id=#{id} and discard=0;
+    </select>
+
+    <insert id="insertNewUser" parameterType="com.unswesg.comp9900h16aaabackend.model.User" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+        INSERT INTO USERS(nickname,password,email) VALUES(#{nickname},#{password},#{email})
+    </insert>
+
+    <update id="changePassword">
+        UPDATE users set password=#{newPassword} where email=#{email}
+    </update>
+</mapper>

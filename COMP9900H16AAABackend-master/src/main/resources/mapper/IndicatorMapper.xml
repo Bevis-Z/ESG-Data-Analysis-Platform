@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unswesg.comp9900h16aaabackend.Mapper.IndicatorMapper">
+    <resultMap id="Indicators" type="com.unswesg.comp9900h16aaabackend.model.Indicator">
+        <id property="indicatorId" column="indicator_id" jdbcType="INTEGER"/>
+        <result property="tertiaryElementId" column="tertiary_element_id" jdbcType="INTEGER"/>
+        <result property="indicatorName" column="indicator_name" jdbcType="VARCHAR"/>
+        <result property="eleWeight" column="ele_weight" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="getIndicatorById" resultMap="Indicators">
+        select * from Indicators where indicator_id=#{id}
+    </select>
+
+    <insert id="insertIndicator" parameterType="com.unswesg.comp9900h16aaabackend.model.Indicator" useGeneratedKeys="true" keyProperty="indicatorId" keyColumn="indicator_id">
+        INSERT INTO Indicators(tertiary_element_id,indicator_name,ele_weight) VALUES(#{tertiaryElementId},#{indicatorName},#{eleWeight});
+    </insert>
+</mapper>

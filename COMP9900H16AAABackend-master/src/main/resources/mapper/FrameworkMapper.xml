@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unswesg.comp9900h16aaabackend.Mapper.FrameworkMapper">
+    <resultMap id="BaseResultMap" type="com.unswesg.comp9900h16aaabackend.model.Framework">
+        <id property="frameworkId" column="framework_id" jdbcType="INTEGER"/>
+        <result property="frameworkName" column="framework_name" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="SubElement" type="com.unswesg.comp9900h16aaabackend.model.SubElement">
+        <id property="frameworkId" column="framework_id" jdbcType="INTEGER"/>
+        <result property="subElementId" column="sub_element_id" jdbcType="INTEGER"/>
+        <result property="subElementName" column="sub_element_name" jdbcType="VARCHAR"/>
+        <result property="eleWeight" column="ele_weight" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       framework_id,framework_name,user_id
+    </sql>
+    <select id="getFrameworkById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from frameworks
+        where framework_id=#{id}
+    </select>
+    <select id="getSecondLevelElements" resultMap="SubElement">
+        select
+        sub_element_id,framework_id,sub_element_name,ele_weight
+        from subElements
+        where framework_id=#{id}
+    </select>
+
+    <insert id="insertFramework" parameterType="com.unswesg.comp9900h16aaabackend.model.Framework" useGeneratedKeys="true" keyProperty="frameworkId" keyColumn="framework_id">
+        INSERT INTO Frameworks(framework_name,user_id) VALUES (#{frameworkName},#{userId});
+    </insert>
+
+    <insert id="insertFrameworkWithId" parameterType="com.unswesg.comp9900h16aaabackend.model.Framework" >
+        INSERT INTO Frameworks(framework_id,framework_name,user_id) VALUES (#{frameworkId},#{frameworkName},#{userId});
+    </insert>
+
+    <select id="getFrameworkByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from frameworks
+        where framework_name=#{frameworkName}
+    </select>
+
+    <update id="unboundFramework">
+        UPDATE frameworks set discard=1 where framework_id=#{frameworkId}
+    </update>
+
+    <select id="getTargetFramework" resultType="integer">
+        select framework_id from frameworks where discard=1
+    </select>
+
+    <delete id="deleteByFrameworkId">
+        delete from frameworks where framework_id=#{frameworkId}
+    </delete>
+
+    <select id="checkDiscard" resultType="Integer">
+        select discard from frameworks where framework_id=#{frameworkId}
+    </select>
+</mapper>

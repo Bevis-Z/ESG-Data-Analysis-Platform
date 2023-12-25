@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unswesg.comp9900h16aaabackend.Mapper.TertiaryElementMapper">
+
+    <resultMap id="TertiaryElements" type="com.unswesg.comp9900h16aaabackend.model.TertiaryElement">
+        <id property="tertiaryElementId" column="tertiary_element_id" jdbcType="INTEGER"/>
+        <result property="tertiaryEelementName" column="tertiary_element_name" jdbcType="VARCHAR"/>
+        <result property="subElementId" column="sub_element_id" jdbcType="INTEGER"/>
+        <result property="eleWeight" column="ele_weight" jdbcType="DECIMAL"/>
+    </resultMap>
+    <resultMap id="Indicators" type="com.unswesg.comp9900h16aaabackend.model.Indicator">
+        <id property="indicatorId" column="indicator_id" jdbcType="INTEGER"/>
+        <result property="tertiaryElementId" column="tertiary_element_id" jdbcType="INTEGER"/>
+        <result property="indicatorName" column="indicator_name" jdbcType="VARCHAR"/>
+        <result property="eleWeight" column="ele_weight" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="getTertiaryElementById" resultMap="TertiaryElements">
+        select * from TertiaryElements where tertiary_element_id=#{id}
+    </select>
+
+    <select id="getIndicators" resultMap="Indicators">
+        select * from Indicators where tertiary_element_id=#{id}
+    </select>
+
+    <insert id="insertTertiaryElement" parameterType="com.unswesg.comp9900h16aaabackend.model.TertiaryElement" useGeneratedKeys="true" keyProperty="tertiaryElementId" keyColumn="tertiary_element_id">
+        INSERT INTO TertiaryElements(sub_element_id, tertiary_element_name,ele_weight) VALUES (#{subElementId},#{tertiaryEelementName},#{eleWeight});
+    </insert>
+</mapper>

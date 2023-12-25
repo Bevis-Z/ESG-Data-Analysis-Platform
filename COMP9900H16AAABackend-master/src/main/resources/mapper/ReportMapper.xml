@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unswesg.comp9900h16aaabackend.Mapper.ReportMapper">
+
+    <resultMap id="ReportMap" type="com.unswesg.comp9900h16aaabackend.model.Report">
+        <id property="reportId" column="report_id" jdbcType="INTEGER"/>
+        <result property="reportEleId" column="report_ele_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="companyName" column="company_name" jdbcType="VARCHAR"/>
+        <result property="indicatorId" column="indicator_id" jdbcType="INTEGER"/>
+        <result property="iptValue" column="ipt_value" jdbcType="DECIMAL"/>
+    </resultMap>
+
+
+    <select id="getTotalUserReportNumber" resultType="integer">
+        select count(distinct report_id) from reports where user_id=#{id};
+    </select>
+
+    <insert id="insertReport" parameterType="com.unswesg.comp9900h16aaabackend.model.Report" useGeneratedKeys="true" keyProperty="reportEleId" keyColumn="report_ele_id">
+        INSERT INTO Reports(report_id,user_id,company_name,indicator_id,ipt_value,framework_id) VALUES(#{reportId},#{userId},#{companyName},#{indicatorId},#{iptValue},#{framework_id});
+    </insert>
+
+
+    <select id="getReportById" resultMap="ReportMap">
+        select report_id,report_ele_id,user_id,company_name,indicator_id,ipt_value from reports where user_id = #{userId} and report_id=#{reportId};
+    </select>
+
+    <select id="getAllUserReportIndex" resultType="integer">
+        select report_id from reports where user_id=#{userId} group by report_id;
+    </select>
+
+
+</mapper>
